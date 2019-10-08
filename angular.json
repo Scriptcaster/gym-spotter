@@ -7,7 +7,9 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "spec": false,
+          "inlineStyle": true
         }
       },
       "root": "",
@@ -28,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap-scss/bootstrap.scss",
               "src/styles.scss"
             ],
             "scripts": []

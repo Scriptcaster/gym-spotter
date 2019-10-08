@@ -1,0 +1,37 @@
+<div>
+  <ul *ngFor="let item of items" class="collection">
+
+    <input type="text" placeholder="Day" [(ngModel)]="item.day" (change)="onChange($event, item)" name="day">
+    <br>
+    <br>
+    <input type="text" placeholder="Muscle Group" [(ngModel)]="item.muscles" (change)="onChange($event, item)" name="muscles">
+    <br>
+    <br>
+    <!-- <ul *ngFor="let exercise of item.exercises" class="collection">
+      {{exercise | json}}
+      {{exercise.name}}
+      <br>
+      <li *ngFor="let weight of exercise.weights">
+        {{weight}}
+      </li>
+      <li *ngFor="let rep of exercise.reps">
+        {{rep}}
+      </li>
+      <li *ngFor="let weight of exercise.weights">
+        {{weight}}
+      </li>
+    </ul> -->
+    
+
+   
+
+    <button (click)="deleteItem($event, item)" class="btn red">Delete Item</button>
+ 
+
+  </ul>
+</div>
+
+<ng-template #noItems>
+  <hr>
+  <h5>No Items</h5>
+</ng-template>

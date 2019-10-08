@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="input-field">
+            <label>Day</label>
+            <input type="text" placeholder="Day" [(ngModel)]="item.day" name="day">
+        </div>
+        <div class="input-field">
+            <label>Muscles</label>
+            <input type="text" placeholder="Muscles" [(ngModel)]="item.muscles" name="muscles">
+        </div>
+        <br>
+
+        <div *ngFor="let thing of things; index as i">
+            <input type="text" [(ngModel)]="things[i]" name="thing.{{i}}" placeholder="Thing {{i + 1}}"> 
+            <button type="button" (click)="onDeleteThing(i)">Remove</button>
+        </div>
+        <button type="button" (click)="onAddThing()">Add</button>
+        
+        <input type="submit" value="Add Day" class="btn">
+    </div>
+</form>
