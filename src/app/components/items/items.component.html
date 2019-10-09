@@ -1,35 +1,17 @@
-<div>
-  <ul *ngFor="let item of items" class="collection">
-
-    <input type="text" placeholder="Day" [(ngModel)]="item.day" (change)="onChange($event, item)" name="day">
-    <br>
-    <br>
-    <input type="text" placeholder="Muscle Group" [(ngModel)]="item.muscles" (change)="onChange($event, item)" name="muscles">
-    <br>
-    <br>
-    <!-- <ul *ngFor="let exercise of item.exercises" class="collection">
-      {{exercise | json}}
-      {{exercise.name}}
-      <br>
-      <li *ngFor="let weight of exercise.weights">
-        {{weight}}
-      </li>
-      <li *ngFor="let rep of exercise.reps">
-        {{rep}}
-      </li>
-      <li *ngFor="let weight of exercise.weights">
-        {{weight}}
-      </li>
-    </ul> -->
-    
-
-   
-
-    <button (click)="deleteItem($event, item)" class="btn red">Delete Item</button>
- 
-
-  </ul>
+<div class="card-group">
+  <div class="card" *ngFor="let item of items">
+    <div class="card-body">
+      <h5 class="card-title">{{item.day}}</h5>
+      <p class="card-text">{{item.muscles}}</p>
+    </div>
+  </div>
 </div>
+
+  <!-- <ul *ngFor="let item of items" class="collection">
+    <input type="text" placeholder="Day" [(ngModel)]="item.day" (change)="onChange($event, item)" name="day">
+    <input type="text" placeholder="Muscle Group" [(ngModel)]="item.muscles" (change)="onChange($event, item)" name="muscles">
+    <button (click)="deleteItem($event, item)" class="btn red">Delete Item</button>
+  </ul> -->
 
 <ng-template #noItems>
   <hr>

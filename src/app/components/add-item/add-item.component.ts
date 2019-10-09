@@ -13,14 +13,15 @@ export class AddItemComponent implements OnInit {
     muscles: '',
     exercises: []
   }
-  thing: string;
-  things: any = [];
+  thing: {name: ''};
+  things: any = [{name: ''}];
 
   
 
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
+   
     // this.things = [
     //   { name: ''},
     // ];
@@ -31,8 +32,8 @@ export class AddItemComponent implements OnInit {
   }
 
   onAddThing() {
-    this.things.push(this.thing);
-    console.log(this.things);
+    this.things.push(this.thing.name);
+    // console.log(this.things);
   }
 
   onDeleteThing(index: number) {
@@ -40,13 +41,17 @@ export class AddItemComponent implements OnInit {
     console.log(this.things);
   }
 
-  onSubmit() {
-    if (this.item.day != '' && this.item.muscles != '') {
-      this.itemService.addItem(this.item);
-      this.item.day = '';
-      this.item.muscles = '';
-      this.item.exercises = this.things;
-    }
+  register(form) {
+    console.log(form.value);
   }
+
+  // onSubmit() {
+  //   if (this.item.day != '' && this.item.muscles != '') {
+  //     this.itemService.addItem(this.item);
+  //     this.item.day = '';
+  //     this.item.muscles = '';
+  //     this.item.exercises = this.things;
+  //   }
+  // }
 
 }
