@@ -1,0 +1,51 @@
+<pre> {{theForm.value | json}} </pre>
+
+<form [formGroup]="theForm" novalidate (ngSubmit)="submitItem()">
+    <div formArrayName="schedule">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Day</label>
+            <input type="text" class="form-control" placeholder="Day" formControlName="day">
+        </div>
+        <div class="form-group">
+            <label>Muscles</label>
+            <input type="text" class="form-control" placeholder="Muscles" formControlName="muscles">
+        </div>
+    </div>
+    <div formArrayName="exercises">
+        <label>Exercises</label>
+        <div *ngFor="let exercise of getExercises(theForm); let i = index" [formGroupName]="i">
+            <div class="row form-group">
+                <div class="col-8">
+                    <input type="text" class="form-control" placeholder="Exercise" formControlName="name">
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-primary" (click)="removeExercise(i)">Remove Exercise</button>
+                </div>
+            </div>
+            <div formArrayName="sets">
+                <label>Sets</label>
+                <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >
+                    <div class="row form-group">
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Weight" formControlName="weight">
+                            <input type="text" class="form-control" placeholder="Rep" formControlName="rep">
+                        </div>
+                        <div class="col-4">
+                            <a class="btn btn-primary" (click)="removeSet(i)">Remove Set</a>
+                        </div>
+                    </div> 
+                </div>
+                <div>
+                    <a class="btn btn-primary" (click)="addSet(i)">Add Set</a>
+                </div>
+            </div>
+
+        </div>
+        <a type="button" class="btn btn-primary" (click)="addExercise()">Add Exercise</a>
+    </div>
+    
+    <button type="submit" class="btn btn-primary mr-4">Submit</button>
+    <button type="button" class="btn btn-primary mr-4" (click)="cancelItem()">Cancel</button>
+    <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="deleteItem()">Remove</button>
+
+</form>

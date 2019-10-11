@@ -12,14 +12,14 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { environment } from 'src/environments/environment';
-import { ItemService } from './services/item.service';
-
-import { ItemsComponent } from './components/items/items.component';
 import { HeaderComponent } from './components/header/header.component';
-import { AddItemComponent } from './components/add-item/add-item.component';
+import { ItemService } from './services/item.service';
+import { ItemsComponent } from './components/items/items.component';
+import { ItemEditComponent } from './components/items/item-edit/item-edit.component';
+import { ItemComponent } from './components/items/item/item.component';
 
 @NgModule({
-  declarations: [AppComponent, ItemsComponent, HeaderComponent, AddItemComponent],
+  declarations: [AppComponent, HeaderComponent, ItemsComponent, ItemEditComponent, ItemComponent],
   imports: [
     BrowserModule,
     FormsModule,

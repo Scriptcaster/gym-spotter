@@ -1,17 +1,17 @@
+<!-- <app-item-edit></app-item-edit> -->
 <div class="card-group">
-  <div class="card" *ngFor="let item of items">
-    <div class="card-body">
-      <h5 class="card-title">{{item.day}}</h5>
-      <p class="card-text">{{item.muscles}}</p>
-    </div>
-  </div>
-</div>
+ <app-item *ngFor="let item of items; let i = index" [item]="item" [index]="i"></app-item>
+  <!-- <div *ngFor="let item of items; let i = index">
+    <a class="card" [routerLink]="['/items', i]" routerLinkActive="active">
+      <div class="card-body">
+        <h5 class="card-title">{{item.day}}</h5>
+        <p class="card-text">{{item.muscles}}</p>
+        <p class="card-text" *ngFor="let exercise of item.exercises">{{exercise.name}}</p>
+      </div>
+    </a>
+  </div> -->
 
-  <!-- <ul *ngFor="let item of items" class="collection">
-    <input type="text" placeholder="Day" [(ngModel)]="item.day" (change)="onChange($event, item)" name="day">
-    <input type="text" placeholder="Muscle Group" [(ngModel)]="item.muscles" (change)="onChange($event, item)" name="muscles">
-    <button (click)="deleteItem($event, item)" class="btn red">Delete Item</button>
-  </ul> -->
+</div>
 
 <ng-template #noItems>
   <hr>

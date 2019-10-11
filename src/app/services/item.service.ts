@@ -40,7 +40,6 @@ export class ItemService {
             })
         );
 
-
         // this.afAuth.authState.subscribe(user => {
         //     console.log(this.afAuth.auth.currentUser.uid);
         // });
@@ -60,23 +59,17 @@ export class ItemService {
         //         return data;
         //     });
         // }));
-
-      
-
     }
-
     getItems() {
         return this.items;
     }
-
     addItem(item: Item) {
+        console.log(this.itemsCollection);
         this.itemsCollection.add(item);
     }
-
     updateItem(item: Item) {
         this.itemsCollection.doc(`${item.id}`).update(item);
     }
-
     deleteItem(item: Item) {
         this.itemsCollection.doc(`${item.id}`).delete();
     }

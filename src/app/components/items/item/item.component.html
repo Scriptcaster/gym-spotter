@@ -1,0 +1,13 @@
+<a class="card" [routerLink]="[index]" routerLinkActive="active">
+    <div class="card-body">
+        <h5 class="card-title">{{item.schedule.day}}</h5>
+        <p class="card-text">{{item.schedule.muscles}}</p>
+        <div class="card-text" *ngFor="let exercise of item.exercises; let i = index">
+            {{exercise.name}}
+            <div class="mb-2" *ngFor="let set of item.exercises[i].sets">
+                {{set.weight}}
+                {{set.rep}}
+            </div>
+        </div>
+    </div>
+</a>
