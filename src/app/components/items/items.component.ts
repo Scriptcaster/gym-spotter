@@ -15,6 +15,7 @@ export class ItemsComponent implements OnInit {
   ngOnInit() {
     this.itemService.getItems().subscribe(items => {
       this.items = items;
+      console.log(items[0].exercises[0].sets[0].weight);
     });
   }
   onChange($event, item) {
