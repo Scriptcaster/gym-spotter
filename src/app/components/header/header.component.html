@@ -37,7 +37,7 @@
             <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
                 <mat-icon>menu</mat-icon>
             </button>
-            <button class="logo" routerLink="/" mat-button>Gym Spotter</button>
+            <button class="logo" routerLink="/" mat-button>Gymbo</button>
             <div fxShow="true" fxHide.lt-md>
                 <button class="link" *ngIf="isAuth" routerLink="/new" mat-button>New</button>
                 <!-- <button class="link" *ngIf="isAuth" routerLink="/items" mat-button>Items</button> -->
@@ -51,6 +51,7 @@
                 <ng-template #login>
                     <button class="link" (click)="auth.googleSignin()" mat-button>Login with Google</button>
                 </ng-template>
+                
             </div>
         </mat-toolbar-row>
     </mat-toolbar>
