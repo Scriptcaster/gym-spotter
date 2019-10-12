@@ -7,7 +7,7 @@ import { ItemEditComponent } from './components/items/item-edit/item-edit.compon
 import { ItemsResolverService } from './components/items/items-resolver.service';
 
 const routes: Routes = [
-  { path: '', component: ItemsComponent },
+  // { path: '', redirectTo: '/items', pathMatch: 'full' },
   { path: '', component: ItemsComponent },
   { path: 'new', component: ItemEditComponent },
   { path: ':id', component: ItemEditComponent },

@@ -1,0 +1,15 @@
+mat-form-field {
+    width: 100%;
+}
+.form-container {
+  padding: 30px;
+  .schedule {
+      width: 1005;
+  }
+}
+.form-container > * {
+  width: 100%;
+}
+.text-right {
+    text-align: right;
+}

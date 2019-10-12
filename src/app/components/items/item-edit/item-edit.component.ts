@@ -5,19 +5,22 @@ import { Item } from '../../../models/item.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 @Component({
   selector: 'app-item-edit',
-  templateUrl: './item-edit.component.html'
+  templateUrl: './item-edit.component.html',
+  styleUrls: ['./item-edit.component.scss',]
 })
 export class ItemEditComponent implements OnInit {
   index: number;
   isEdit = false;
   theForm: FormGroup;
+  breakpoint;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private itemService: ItemService, 
   ) {}
 
-    ngOnInit() {
+  ngOnInit() {
+    this.breakpoint = (window.innerWidth > 400) ? 2 : 1;
     this.route.params.subscribe((params: Params) => {
       this.index = +params['id'];
       this.isEdit = params['id'] != null;
@@ -135,6 +138,11 @@ export class ItemEditComponent implements OnInit {
   deleteItem() {
     this.itemService.deleteItem(this.theForm.value);
     this.cancelItem();
+  }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 1;
+    this.breakpoint = (event.target.innerWidth > 400) ? 2 : 1;
   }
 
 }

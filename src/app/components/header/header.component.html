@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-sm navbar-dark" style="background: #FF782D">
+<!-- <nav class="navbar sticky-top navbar-expand-sm navbar-dark" style="background: #FF782D">
     <a class="navbar-brand" href="#">Gym Spotter</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,4 +29,44 @@
 
         </ul>
     </div>
-</nav>
+</nav> -->
+
+<!-- <div style="height: 80vh;"> -->
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button class="logo" routerLink="/" mat-button>Gym Spotter</button>
+            <div fxShow="true" fxHide.lt-md>
+                <button class="link" *ngIf="isAuth" routerLink="/new" mat-button>New</button>
+                <!-- <button class="link" *ngIf="isAuth" routerLink="/items" mat-button>Items</button> -->
+            </div>
+            <span class="menu-spacer"></span>
+            <div fxShow="true" fxHide.lt-md>
+                <!-- <button class="link" *ngIf="isAuth else login" (click)="auth.signOut()" mat-button login>Logout</button> -->
+                <button *ngIf="isAuth else login" (click)="auth.signOut()" mat-icon-button aria-label="Logout" login>
+                   <mat-icon>exit_to_app</mat-icon>
+                </button>
+                <ng-template #login>
+                    <button class="link" (click)="auth.googleSignin()" mat-button>Login with Google</button>
+                </ng-template>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container fxFlexFill>
+        <mat-sidenav #sidenav>
+            <mat-nav-list>
+                <!-- <a (click)="sidenav.toggle()" href="" mat-list-item>Close</a> -->
+                <a class="link" *ngIf="isAuth" routerLink="/new" mat-list-item>New Item</a>
+                <!-- <a class="link" *ngIf="isAuth" routerLink="/items" mat-list-item>Items</a> -->
+                <a *ngIf="isAuth else login" (click)="auth.signOut()"  mat-list-item aria-label="Logout" login>Logout</a>
+                <ng-template #login>
+                    <button class="link" (click)="auth.googleSignin()" mat-button>Login with Google</button>
+                </ng-template>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
