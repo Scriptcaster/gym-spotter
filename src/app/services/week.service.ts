@@ -74,7 +74,6 @@ export class WeekService {
         return this.weeks;
     }
     getDays(weekId) {
-        // return this.days;
         return this.afAuth.authState.pipe(
             switchMap(user => {
                 if (user) {
@@ -93,12 +92,13 @@ export class WeekService {
         );
     }
     updateDay(weekId: any, day: Day) {
-        this.weeksCollection.doc(weekId).collection('days').doc(`${day.id}`).update(day);
+        console.log(day);
+        this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('weeks').doc(weekId).collection('days').doc(`${day.id}`).update(day);
     }
     addWeek() {
         const pushkey = this.afs.createId();
         this.weeksCollection.doc(pushkey).set({ id: pushkey, date:Date.now() / 1000});
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 0, date: 'Monday', target: 'Chest & Triceps',
+        this.weeksCollection.doc(pushkey).collection('days').add({id: '', index: 0, date: 'Monday', target: 'Chest & Triceps', volume: 0
             // exercises: [
             //     {
             //         name: 'Chest Press',
@@ -108,12 +108,12 @@ export class WeekService {
             //     }
             // ]
         });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 1, date: 'Tuesday', target: 'Legs' });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 2, date: 'Wednesday', target: 'Day Off' });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 3, date: 'Thursday', target: 'Back & Biceps' });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 4, date: 'Friday', target: 'Shoulder & Abs' });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 5, date: 'Saturday', target: 'Day Off' });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 6, date: 'Sunday', target: 'Day Off' });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 1, date: 'Tuesday', target: 'Legs', volume: 0 });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 2, date: 'Wednesday', target: 'Day Off', volume: 0 });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 3, date: 'Thursday', target: 'Back & Biceps', volume: 0 });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 4, date: 'Friday', target: 'Shoulder & Abs', volume: 0 });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 5, date: 'Saturday', target: 'Day Off', volume: 0 });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 6, date: 'Sunday', target: 'Day Off', volume: 0 });
     }
     deleteWeek(id) {
         console.log('Week ID: ' + id);

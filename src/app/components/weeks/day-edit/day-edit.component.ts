@@ -1,18 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { WeekService } from '../../../services/week.service';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+
 @Component({
   selector: 'app-day-edit',
   templateUrl: './day-edit.component.html',
   styleUrls: ['./day-edit.component.scss']
 })
 export class DayEditComponent implements OnInit {
-  // @Input() week: number;
   weekId: any;
   index: number;
   isEdit = false;
   theForm: FormGroup;
+  tempForm: FormGroup;
   breakpoint: number;
   volume: number;
   constructor(
@@ -28,25 +29,26 @@ export class DayEditComponent implements OnInit {
       this.weekId = params['week'];
       this.index = +params['id'];
       this.isEdit = params['id'] != null;
+
       this.theForm = new FormGroup({
+        id: new FormControl(''),
         date: new FormControl(''),
         target: new FormControl(''),
-        exercises: new FormArray([]),
+        volume: new FormControl(''),
+        exercises: new FormArray([])
       });
     
-      if(this.isEdit) {
+      // if(this.isEdit) {
         this.weekService.getDays(this.weekId).subscribe(item => {
-            item = item.sort((a, b) => a.index - b.index);
-            this.theForm = new FormGroup({
-              id: new FormControl(item[this.index].id ),
-              date: new FormControl(item[this.index].date ),
-              target: new FormControl(item[this.index].target ),
-              exercises: new FormArray([]),
-            });
-           
+          item = item.sort((a, b) => a.index - b.index);
+          this.theForm.patchValue({
+            id: item[this.index].id,
+            date: item[this.index].date,
+            target: item[this.index].target,
+          });
+
           if (item[this.index].exercises) {
-             
-              let setIndex = -1;
+            let setIndex = -1;
             for (let exercise of item[this.index].exercises) {
               setIndex ++;
               const control = <FormArray>this.theForm.get('exercises');
@@ -68,31 +70,28 @@ export class DayEditComponent implements OnInit {
               }
             }
           }
+
         });
-      } 
+      // }
+      // this.theForm.valueChanges.subscribe(console.log);
+
     });
-    this.theForm.valueChanges.subscribe(console.log);
 
-    // this.theForm.valueChanges.subscribe(val => {
-    //   console.log('asd');
-    // });
-
+    
+    this.theForm.valueChanges.subscribe(() => {
+      let array = [];
+      this.theForm.value.exercises.forEach(exercise => {
+        exercise.sets.forEach(set => {
+          array.push(set);
+        });
+      });
+      this.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
+        return item + currentTotal
+      }, 0);
+    });
     // this.theForm.controls['target'].valueChanges.subscribe(change => {
     //   console.log(change);
     // });
-  }
-
-  showVolume() {
-    let array = [];
-    this.theForm.value.exercises.forEach(exercise => {
-      exercise.sets.forEach(set => {
-        array.push(set);
-      });
-    });
-    this.theForm.value.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
-      return item + currentTotal
-    }, 0);
-    this.volume = this.theForm.value.volume;
   }
 
   initExercises() {
@@ -145,6 +144,7 @@ export class DayEditComponent implements OnInit {
    submitItem() {
     if (this.theForm.value != '') {
     //   if (this.isEdit) {
+      this.theForm.value.volume = this.volume;
       this.weekService.updateDay(this.weekId, this.theForm.value);
       // } else {
         // this.weekService.addWeek(this.week, this.theForm.value);

@@ -5,5 +5,6 @@ export interface Day {
     date: string;
     target: string;
     days: any;
+    volume: number;
     exercises: any;
 }

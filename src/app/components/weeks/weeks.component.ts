@@ -51,6 +51,22 @@ export class WeeksComponent implements OnInit {
           });
         })).subscribe(days => {
           this.days.push(days);
+          console.log(days);
+          // days.forEach(day => {
+          days.map(day => {
+            this.array.push(day.volume)
+          });
+          console.log(this.array);
+          this.volume = this.array.reduce((currentTotal, item) => {
+            return item + currentTotal
+          }, 0);
+          console.log(this.volume);
+            
+              // return item + currentTotal
+          
+          // console.log(this.total);
+          // });
+          // this.total.push(this.volume);
           // this.days.forEach(day => {
           //   day.forEach(item => {
           //     if(item.exercises) {
