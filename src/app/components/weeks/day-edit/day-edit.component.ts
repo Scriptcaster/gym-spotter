@@ -48,46 +48,51 @@ export class DayEditComponent implements OnInit {
              
               let setIndex = -1;
             for (let exercise of item[this.index].exercises) {
-              
-                setIndex ++;
-                const control = <FormArray>this.theForm.get('exercises');
-                control.push(
+              setIndex ++;
+              const control = <FormArray>this.theForm.get('exercises');
+              control.push(
+                new FormGroup({
+                  name: new FormControl(exercise.name),
+                  sets: new FormArray([])
+                })
+              );
+
+              for (let set of exercise.sets) {
+                const control2 = <FormArray>this.theForm.get('exercises')['controls'][setIndex].get('sets');
+                control2.push(
                   new FormGroup({
-                    name: new FormControl(exercise.name),
-                    sets: new FormArray([])
+                    weight: new FormControl(set.weight),
+                    rep: new FormControl(set.rep),
                   })
                 );
-
-                for (let set of exercise.sets) {
-                
-                  const control2 = <FormArray>this.theForm.get('exercises')['controls'][setIndex].get('sets');
-                  control2.push(
-                    new FormGroup({
-                      weight: new FormControl(set.weight),
-                      rep: new FormControl(set.rep),
-                    })
-                  );
-                }
-
               }
             }
-
+          }
         });
       } 
     });
     this.theForm.valueChanges.subscribe(console.log);
-    // console.log(this.theForm.value);
-    // let array = [];
-    // this.theForm.value.exercises.forEach(exercise => {
-    //   exercise.sets.forEach(set => {
-    //     array.push(set);
-    //   });
-    // });
-    // this.theForm.value.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
-    //   return item + currentTotal
-    // }, 0);
-    // this.volume = this.theForm.value.volume;
 
+    // this.theForm.valueChanges.subscribe(val => {
+    //   console.log('asd');
+    // });
+
+    // this.theForm.controls['target'].valueChanges.subscribe(change => {
+    //   console.log(change);
+    // });
+  }
+
+  showVolume() {
+    let array = [];
+    this.theForm.value.exercises.forEach(exercise => {
+      exercise.sets.forEach(set => {
+        array.push(set);
+      });
+    });
+    this.theForm.value.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
+      return item + currentTotal
+    }, 0);
+    this.volume = this.theForm.value.volume;
   }
 
   initExercises() {

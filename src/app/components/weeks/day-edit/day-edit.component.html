@@ -1,6 +1,6 @@
 <!-- <pre> {{theForm.value | json}} </pre> -->
 <div class="form-container">
-    {{volume}}
+    Total: {{volume}}
     <form [formGroup]="theForm" novalidate (ngSubmit)="submitItem()">
 
         <!-- <div formArrayName="schedule"> -->
@@ -59,6 +59,7 @@
 
         <button type="submit" mat-button color="primary">Update</button>
         <button type="button" mat-button color="primary" (click)="cancelItem()">Cancel</button>
+        <button type="button" mat-button color="primary" (click)="showVolume()">Show Volume</button>
         <!-- <button type="button" mat-button color="warn" *ngIf="isEdit" (click)="deleteItem()">Remove</button> -->
 
     </form>
