@@ -1,0 +1,26 @@
+<div class="flex-wrap" fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap="40px" fxLayoutGap="20px" fxLayoutAlign="center" style="margin: 20px;">
+    <div class="item" style="padding: 20px; background: #00000008;">
+        <h1>Total Volume: {{total}}</h1>
+    </div>
+</div>
+
+<div fxLayout="column wrap" fxLayout.xs="column" fxLayoutWrap="20px" fxLayoutGap="10px" fxLayoutAlign="center" style="margin: 20px;">
+    <button type="button" (click)="addWeek(weeks)" mat-button>Add Week</button>
+    <div class="item" fxFlex *ngFor="let week of weeks; let i = index" style="padding: 20px; background: #00000008;">
+        {{week.date}} {{i}} {{total[i]}}
+        <div>
+            <div class="item" fxFlex *ngFor="let day of days[i]; let j = index" style="padding: 20px; background: #00000008;">
+                <app-day [day]="day" [index]="day.index" [week]="week.id"></app-day>
+                {{day.index}}
+            </div>
+        </div>
+        <div>
+            <button type="button" (click)="removeWeek(week.id)" mat-button>Remove</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItems>
+    <hr>
+    <h5>No Items</h5>
+</ng-template>

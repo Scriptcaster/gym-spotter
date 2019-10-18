@@ -1,0 +1,65 @@
+<!-- <pre> {{theForm.value | json}} </pre> -->
+<div class="form-container">
+    {{volume}}
+    <form [formGroup]="theForm" novalidate (ngSubmit)="submitItem()">
+
+        <!-- <div formArrayName="schedule"> -->
+
+            <!-- <mat-grid-list [cols]="breakpoint" rowHeight="4:1" (window:resize)="onResize($event)"> -->
+
+            <!-- <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> -->
+
+            <mat-form-field>
+                <input type="text" matInput placeholder="Date" formControlName="date">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <input type="text" matInput placeholder="Target" formControlName="target">
+            </mat-form-field>
+                
+        <!-- </div> -->
+
+        <div formArrayName="exercises">
+            <div class="row" fxLayout="row" fxLayout.xs="column" fxLayoutWrap="20px" fxLayoutGap="0" fxLayoutAlign="left">
+            <div class="item" *ngFor="let exercise of getExercises(theForm); let i = index" [formGroupName]="i" (window:resize)="onResize($event)">
+                
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Exercise" formControlName="name">
+                </mat-form-field> 
+                
+                <div formArrayName="sets">
+                    
+                    <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >
+                        
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="Weight" formControlName="weight">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="Rep" formControlName="rep">
+                        </mat-form-field>
+                        <div class="text-right">
+                            <a class="btn btn-primary" (click)="removeSet(i)" mat-button color="warn">Remove Set</a>
+                        </div>
+                            
+                    </div>
+                    <div class="text-right">
+                        <a class="btn btn-primary" (click)="addSet(i)" mat-button color="primary">Add Set</a>
+                    </div>
+                        
+                </div>
+                <a type="button" (click)="removeExercise(i)" mat-button color="warn">Remove Exercise</a>
+            </div>
+            </div>
+            <a type="button" (click)="addExercise()" mat-button color="primary">Add Exercise</a>
+        </div>
+
+        <button type="submit" mat-button color="primary">Update</button>
+        <button type="button" mat-button color="primary" (click)="cancelItem()">Cancel</button>
+        <!-- <button type="button" mat-button color="warn" *ngIf="isEdit" (click)="deleteItem()">Remove</button> -->
+
+    </form>
+</div>

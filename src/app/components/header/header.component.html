@@ -39,7 +39,7 @@
             </button>
             <button class="logo" routerLink="/" mat-button>Gymbo</button>
             <div fxShow="true" fxHide.lt-md>
-                <button class="link" *ngIf="isAuth" routerLink="/new" mat-button>New</button>
+                <button class="link" *ngIf="isAuth" routerLink="/new" mat-button>New Week</button>
                 <!-- <button class="link" *ngIf="isAuth" routerLink="/items" mat-button>Items</button> -->
             </div>
             <span class="menu-spacer"></span>
@@ -59,7 +59,7 @@
         <mat-sidenav #sidenav>
             <mat-nav-list>
                 <!-- <a (click)="sidenav.toggle()" href="" mat-list-item>Close</a> -->
-                <a class="link" *ngIf="isAuth" routerLink="/new" mat-list-item>New Item</a>
+                <a class="link" *ngIf="isAuth" routerLink="/new" mat-list-item>New Week</a>
                 <!-- <a class="link" *ngIf="isAuth" routerLink="/items" mat-list-item>Items</a> -->
                 <a *ngIf="isAuth else login" (click)="auth.signOut()"  mat-list-item aria-label="Logout" login>Logout</a>
                 <ng-template #login>
