@@ -65,13 +65,6 @@ export class WeekService {
         //         }
         //     })
         // );
-
-    }
-    getUserId() {
-        return this.userId;
-    }
-    getWeeks() {
-        return this.weeks;
     }
     getDays(weekId) {
         return this.afAuth.authState.pipe(
@@ -95,19 +88,13 @@ export class WeekService {
         console.log(day);
         this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('weeks').doc(weekId).collection('days').doc(`${day.id}`).update(day);
     }
+    getWeeks() {
+        return this.weeks;
+    }
     addWeek() {
         const pushkey = this.afs.createId();
         this.weeksCollection.doc(pushkey).set({ id: pushkey, date:Date.now() / 1000});
-        this.weeksCollection.doc(pushkey).collection('days').add({id: '', index: 0, date: 'Monday', target: 'Chest & Triceps', volume: 0
-            // exercises: [
-            //     {
-            //         name: 'Chest Press',
-            //         sets: [
-            //             { weight: 60, rep: 8 }
-            //         ]
-            //     }
-            // ]
-        });
+        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 0, date: 'Monday', target: 'Chest & Triceps', volume: 0 });
         this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 1, date: 'Tuesday', target: 'Legs', volume: 0 });
         this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 2, date: 'Wednesday', target: 'Day Off', volume: 0 });
         this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 3, date: 'Thursday', target: 'Back & Biceps', volume: 0 });
@@ -116,8 +103,16 @@ export class WeekService {
         this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 6, date: 'Sunday', target: 'Day Off', volume: 0 });
     }
     deleteWeek(id) {
-        console.log('Week ID: ' + id);
         this.weeksCollection.doc(id).delete();
     }
 
 }
+
+// exercises: [
+//     {
+//         name: 'Chest Press',
+//         sets: [
+//             { weight: 60, rep: 8 }
+//         ]
+//     }
+// ]

@@ -114,7 +114,14 @@ export class DayEditComponent implements OnInit {
   }
   addSet(j) {
     const control = <FormArray>this.theForm.get('exercises')['controls'][j].get('sets');
-    control.push(this.initSets());
+    if (control['controls'][j]) {
+      control.push(control['controls'][j]);
+    } else {
+      control.push(this.initSets());
+    }
+  }
+  removeSet(i, j) {
+    <FormArray>this.theForm.get('exercises')['controls'][i].get('sets').removeAt(j);
   }
   getExercises(form) {
     return form.controls.exercises.controls;
@@ -126,16 +133,6 @@ export class DayEditComponent implements OnInit {
     const control = <FormArray>this.theForm.get('exercises');
     control.removeAt(i);
   }
-  removeSet(j) {
-    const control = <FormArray>this.theForm.get('exercises')['controls'][j].get('sets');
-    control.removeAt(j);
-  }
-  // remove(i, j) {
-
-  //   const control = <FormArray>this.theForm.get(['exercises', i, 'sets', j, 'options']);
-  //   control.removeAt(0);
-  //   control.controls = [];
-  // }
   cancelItem() {
     this.theForm.markAsPristine();
     this.theForm.reset();

@@ -15,28 +15,19 @@ import { Day } from '../../models/day.model';
 })
 export class WeeksComponent implements OnInit {
   
-  firstCollection: AngularFirestoreCollection<Day>;
-  weeks: Week[];
-  days: any = [];
   documentForm: FormGroup;
-  volume: any = [];
-  array: any = [];
-  total: any = [];
-
-  dataArray: any = [];
-
-  newWeek: any = 'hey';
-
-  count: number;
+  firstCollection: AngularFirestoreCollection<Day>;
+  days: any = [];
+  weeks: Week[];
+  volumes: any = [];
+  dailyVolume: any = [];
+  weeklyVolume: any = [];
 
   constructor(
     public afs: AngularFirestore,
     private weekService: WeekService,
-    private afAuth: AngularFireAuth
   ) {}
   ngOnInit() {
-
-    let dayData: any;
     this.weekService.getWeeks().subscribe(weeks => {
       this.weeks = weeks;
       this.weeks.forEach(element => {
@@ -51,58 +42,25 @@ export class WeeksComponent implements OnInit {
           });
         })).subscribe(days => {
           this.days.push(days);
-          console.log(days);
-          // days.forEach(day => {
-          days.map(day => {
-            this.array.push(day.volume)
-          });
-          console.log(this.array);
-          this.volume = this.array.reduce((currentTotal, item) => {
-            return item + currentTotal
-          }, 0);
-          console.log(this.volume);
-            
-              // return item + currentTotal
-          
-          // console.log(this.total);
+          // days.map(day => {
+          //   this.volumes.push(day.volume)
           // });
-          // this.total.push(this.volume);
-          // this.days.forEach(day => {
-          //   day.forEach(item => {
-          //     if(item.exercises) {
-          //       item.exercises.forEach(exercise => {
-          //         exercise.sets.forEach(set => {
-          //           this.array.push(set);
-          //         });
-          //       });
-          //     }
-          //   });   
-          // });
-          // this.volume = this.array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
-          //     return item + currentTotal
-          //   }, 0);
-          // this.total.push(this.volume);
+          // this.dailyVolume = this.volumes.reduce((currentTotal, item) => {
+          //   return item + currentTotal
+          // }, 0);
+          // this.weeklyVolume.push(this.dailyVolume)
         });
       });
     });
   }
   addWeek() {
     this.weekService.addWeek();
+    // this.weekService.getWeeks().subscribe(weeks => {
+    //   console.log(weeks)
+    // });
   }
+    
   removeWeek(index) {
     this.weekService.deleteWeek(index);
   }
-  // onChange($event, week) {
-  //   this.updateWeek(week);
-  // }
-  // deleteWeek(event, week: Week) {
-  //   this.weekService.deleteWeek(week);
-  // }
-  // updateWeek(week: Week) {
-  //   this.weekService.updateWeek(week);
-  // }
-  // getWeekIndex(index) {
-  //   console.log(index);
-  // }
-
 }

@@ -26,16 +26,12 @@
 
         <div formArrayName="exercises">
             <div class="row" fxLayout="row" fxLayout.xs="column" fxLayoutWrap="20px" fxLayoutGap="0" fxLayoutAlign="left">
-            <div class="item" *ngFor="let exercise of getExercises(theForm); let i = index" [formGroupName]="i" (window:resize)="onResize($event)">
-                
+            <div class="item" *ngFor="let exercise of getExercises(theForm); let i = index" [formGroupName]="i" (window:resize)="onResize($event)"> 
                 <mat-form-field>
                     <input type="text" matInput placeholder="Exercise" formControlName="name">
                 </mat-form-field> 
-                
-                <div formArrayName="sets">
-                    
+                <div formArrayName="sets">  
                     <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >
-                        
                         <mat-form-field>
                             <input type="text" matInput placeholder="Weight" formControlName="weight">
                         </mat-form-field>
@@ -43,14 +39,12 @@
                             <input type="text" matInput placeholder="Rep" formControlName="rep">
                         </mat-form-field>
                         <div class="text-right">
-                            <a class="btn btn-primary" (click)="removeSet(i)" mat-button color="warn">Remove Set</a>
-                        </div>
-                            
+                            <a class="btn btn-primary" (click)="removeSet(i, j)" mat-button color="warn">Remove</a>
+                        </div>     
                     </div>
                     <div class="text-right">
-                        <a class="btn btn-primary" (click)="addSet(i)" mat-button color="primary">Add Set</a>
-                    </div>
-                        
+                        <a class="btn btn-primary" (click)="addSet(i)" mat-button color="primary">Add</a>
+                    </div>  
                 </div>
                 <a type="button" (click)="removeExercise(i)" mat-button color="warn">Remove Exercise</a>
             </div>
