@@ -84,9 +84,10 @@ export class WeekService {
             })
         );
     }
-    updateDay(weekId: any, day: Day) {
-        console.log(day);
-        this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('weeks').doc(weekId).collection('days').doc(`${day.id}`).update(day);
+    updateDay(weekId: any, day: Day, weeklyVolume: number) {
+        const document = this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('weeks').doc(weekId);
+        document.collection('days').doc(`${day.id}`).update(day);
+        document.update({volume: weeklyVolume});
     }
     getWeeks() {
         return this.weeks;

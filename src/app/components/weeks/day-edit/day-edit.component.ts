@@ -16,6 +16,8 @@ export class DayEditComponent implements OnInit {
   tempForm: FormGroup;
   breakpoint: number;
   volume: number;
+  volumeArray: any[];
+  weeklyVolume: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -39,39 +41,44 @@ export class DayEditComponent implements OnInit {
       });
     
       // if(this.isEdit) {
-        this.weekService.getDays(this.weekId).subscribe(item => {
-          item = item.sort((a, b) => a.index - b.index);
-          this.theForm.patchValue({
-            id: item[this.index].id,
-            date: item[this.index].date,
-            target: item[this.index].target,
-          });
+      this.weekService.getDays(this.weekId).subscribe(item => {
+        item = item.sort((a, b) => a.index - b.index);
 
-          if (item[this.index].exercises) {
-            let setIndex = -1;
-            for (let exercise of item[this.index].exercises) {
-              setIndex ++;
-              const control = <FormArray>this.theForm.get('exercises');
-              control.push(
+        this.volumeArray = item.map(item => {
+         return item.volume;
+        });
+               
+        this.theForm.patchValue({
+          id: item[this.index].id,
+          date: item[this.index].date,
+          target: item[this.index].target,
+        });
+
+        if (item[this.index].exercises) {
+          let setIndex = -1;
+          for (let exercise of item[this.index].exercises) {
+            setIndex ++;
+            const control = <FormArray>this.theForm.get('exercises');
+            control.push(
+              new FormGroup({
+                name: new FormControl(exercise.name),
+                sets: new FormArray([])
+              })
+            );
+
+            for (let set of exercise.sets) {
+              const control2 = <FormArray>this.theForm.get('exercises')['controls'][setIndex].get('sets');
+              control2.push(
                 new FormGroup({
-                  name: new FormControl(exercise.name),
-                  sets: new FormArray([])
+                  weight: new FormControl(set.weight),
+                  rep: new FormControl(set.rep),
                 })
               );
-
-              for (let set of exercise.sets) {
-                const control2 = <FormArray>this.theForm.get('exercises')['controls'][setIndex].get('sets');
-                control2.push(
-                  new FormGroup({
-                    weight: new FormControl(set.weight),
-                    rep: new FormControl(set.rep),
-                  })
-                );
-              }
             }
           }
+        }
 
-        });
+      });
       // }
       // this.theForm.valueChanges.subscribe(console.log);
 
@@ -86,6 +93,10 @@ export class DayEditComponent implements OnInit {
         });
       });
       this.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
+        return item + currentTotal
+      }, 0);
+      this.volumeArray[this.index] = this.volume;
+      this.weeklyVolume = this.volumeArray.reduce((currentTotal, item) => {
         return item + currentTotal
       }, 0);
     });
@@ -142,7 +153,7 @@ export class DayEditComponent implements OnInit {
     if (this.theForm.value != '') {
     //   if (this.isEdit) {
       this.theForm.value.volume = this.volume;
-      this.weekService.updateDay(this.weekId, this.theForm.value);
+      this.weekService.updateDay(this.weekId, this.theForm.value, this.weeklyVolume);
       // } else {
         // this.weekService.addWeek(this.week, this.theForm.value);
       // }
