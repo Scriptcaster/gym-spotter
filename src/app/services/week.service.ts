@@ -92,16 +92,22 @@ export class WeekService {
     getWeeks() {
         return this.weeks;
     }
-    addWeek() {
-        const pushkey = this.afs.createId();
-        this.weeksCollection.doc(pushkey).set({ id: pushkey, date:Date.now() / 1000});
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 0, date: 'Monday', target: 'Chest & Triceps', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 1, date: 'Tuesday', target: 'Legs', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 2, date: 'Wednesday', target: 'Day Off', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 3, date: 'Thursday', target: 'Back & Biceps', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 4, date: 'Friday', target: 'Shoulder & Abs', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 5, date: 'Saturday', target: 'Day Off', volume: 0 });
-        this.weeksCollection.doc(pushkey).collection('days').add({ id: '', index: 6, date: 'Sunday', target: 'Day Off', volume: 0 });
+    addWeek(array) {
+        const id = this.afs.createId();
+        this.weeksCollection.doc(id).set({ id: id, date:Date.now() / 1000});
+        if (array == undefined) {
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 0, date: 'Monday', target: 'Chest & Triceps', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 1, date: 'Tuesday', target: 'Legs', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 2, date: 'Wednesday', target: 'Day Off', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 3, date: 'Thursday', target: 'Back & Biceps', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 4, date: 'Friday', target: 'Shoulder & Abs', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 5, date: 'Saturday', target: 'Day Off', volume: 0 });
+            this.weeksCollection.doc(id).collection('days').add({ id: '', index: 6, date: 'Sunday', target: 'Day Off', volume: 0 });
+        } else {
+            array.forEach(element => {
+                this.weeksCollection.doc(id).collection('days').add(element);
+            });
+        }
     }
     deleteWeek(id) {
         this.weeksCollection.doc(id).delete();

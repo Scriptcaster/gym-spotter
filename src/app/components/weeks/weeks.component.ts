@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
-import { AngularFireAuth } from '@angular/fire/auth';
 
 import { WeekService } from '../../services/week.service';
 import { Week } from '../../models/week.model';
@@ -21,7 +20,8 @@ export class WeeksComponent implements OnInit {
   weeks: Week[];
   volumes: any = [];
   dailyVolume: any = [];
-  weeklyVolume: any = [];
+  weeklyVolumeArray: any = [];
+  bestVolume: any = [];
 
   constructor(
     public afs: AngularFirestore,
@@ -30,6 +30,12 @@ export class WeeksComponent implements OnInit {
   ngOnInit() {
     this.weekService.getWeeks().subscribe(weeks => {
       this.weeks = weeks;
+
+      this.weeks.map(day => {
+        this.weeklyVolumeArray.push(day.volume)
+      });
+      this.bestVolume = Math.max.apply(0, this.weeklyVolumeArray);
+
       this.weeks.forEach(element => {
         this.afs.collection('data').doc('Xi2BQ9KuCwOR2MeHIHUPH5G7bTc2').collection('weeks').doc(element.id).collection('days', ref => {
           return ref
@@ -54,10 +60,7 @@ export class WeeksComponent implements OnInit {
     });
   }
   addWeek() {
-    this.weekService.addWeek();
-    // this.weekService.getWeeks().subscribe(weeks => {
-    //   console.log(weeks)
-    // });
+    this.weekService.addWeek(this.days[0]);
   }
     
   removeWeek(index) {

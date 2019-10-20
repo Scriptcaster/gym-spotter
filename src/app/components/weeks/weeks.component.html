@@ -1,18 +1,18 @@
 <div class="flex-wrap" fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap="40px" fxLayoutGap="20px" fxLayoutAlign="center" style="margin: 20px;">
     <div class="item" style="padding: 20px; background: #00000008;">
-        <h1>Best Weekly Volume: 5000</h1>
+        <h1>Best Weekly Volume: {{bestVolume}}</h1>
     </div>
 </div>
 
 <div fxLayout="column wrap" fxLayout.xs="column" fxLayoutWrap="20px" fxLayoutGap="10px" fxLayoutAlign="center" style="margin: 20px;">
     <button type="button" (click)="addWeek(weeks)" mat-button>Add Week</button>
     <div class="item" fxFlex *ngFor="let week of weeks; let i = index" style="padding: 20px; background: #00000008;">
-        Weekly Volume: {{week.volume}} Index: {{i}} Id: {{week.id}}
+        Weekly Volume: {{week.volume}} 
+        <!-- Index: {{i}} Id: {{week.id}} -->
         <!-- Date: {{ week.date | date: 'sssZ' }} -->
         <div>
             <div class="item" fxFlex *ngFor="let day of days[i]; let j = index" style="padding: 20px; background: #00000008;">
                 <app-day [day]="day" [index]="day.index" [week]="week.id"></app-day>
-                <!-- {{day.volume}} -->
             </div>
         </div>
         <div>

@@ -7,4 +7,5 @@ export interface Day {
     days: any;
     volume: number;
     exercises: any;
+    set: number;
 }

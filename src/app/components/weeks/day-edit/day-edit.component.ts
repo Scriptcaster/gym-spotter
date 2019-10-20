@@ -72,6 +72,7 @@ export class DayEditComponent implements OnInit {
                 new FormGroup({
                   weight: new FormControl(set.weight),
                   rep: new FormControl(set.rep),
+                  set: new FormControl(set.set), // new
                 })
               );
             }
@@ -92,7 +93,7 @@ export class DayEditComponent implements OnInit {
           array.push(set);
         });
       });
-      this.volume = array.map(set => set.rep * set.weight).reduce((currentTotal, item) => {
+      this.volume = array.map(set => set.weight * set.rep * set.set).reduce((currentTotal, item) => {
         return item + currentTotal
       }, 0);
       this.volumeArray[this.index] = this.volume;
@@ -117,6 +118,7 @@ export class DayEditComponent implements OnInit {
     return new FormGroup({
       weight: new FormControl(''),
       rep: new FormControl(''),
+      set: new FormControl(''),
     });
   }
   addExercise() {

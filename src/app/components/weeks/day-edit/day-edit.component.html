@@ -33,18 +33,21 @@
                 <div formArrayName="sets">  
                     <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >
                         <mat-form-field>
-                            <input type="text" matInput placeholder="Weight" formControlName="weight">
+                            <input type="text" matInput placeholder="Weights" formControlName="weight">
                         </mat-form-field>
                         <mat-form-field>
-                            <input type="text" matInput placeholder="Rep" formControlName="rep">
+                            <input type="text" matInput placeholder="Reps" formControlName="rep">
                         </mat-form-field>
-                        <div class="text-right">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="Sets" formControlName="set">
+                        </mat-form-field>
+                        <!-- <div class="text-right">
                             <a class="btn btn-primary" (click)="removeSet(i, j)" mat-button color="warn">Remove</a>
-                        </div>     
+                        </div>      -->
                     </div>
-                    <div class="text-right">
+                    <!-- <div class="text-right">
                         <a class="btn btn-primary" (click)="addSet(i)" mat-button color="primary">Add</a>
-                    </div>  
+                    </div>   -->
                 </div>
                 <a type="button" (click)="removeExercise(i)" mat-button color="warn">Remove Exercise</a>
             </div>
