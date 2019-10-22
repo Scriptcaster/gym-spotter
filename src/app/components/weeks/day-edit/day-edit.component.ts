@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { WeekService } from '../../../services/week.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-day-edit',
@@ -15,16 +16,89 @@ export class DayEditComponent implements OnInit {
   theForm: FormGroup;
   tempForm: FormGroup;
   breakpoint: number;
-  volume: number;
+  volume: any[];
   volumeArray: any[];
+  dailyVolume: number;
   weeklyVolume: number;
+  bestVolume: number;
+  exercises: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private weekService: WeekService, 
+    private weekService: WeekService,
+    public afs: AngularFirestore, 
   ) {}
 
   ngOnInit() {
+    // this.weekService.getBest('ok').subscribe(element => {
+    //   console.log(element);
+    // });
+    // console.log(this.weekService.getBest('ok'));
+    this.weekService.getBest().subscribe(element => {
+      let array3 = [];
+      let nameArray = [];
+      this.exercises = element;
+
+      // element.forEach(element => {
+      //   this.afs.collection('data').doc('Xi2BQ9KuCwOR2MeHIHUPH5G7bTc2').collection('weeks').doc(element.id).collection('days', ref => {
+      //     return ref.orderBy('index', 'asc')
+      //   }).snapshotChanges().pipe(map(changes => {
+      //     return changes.map(arr => {
+      //       const data = arr.payload.doc.data() as Day;
+      //       data.id = arr.payload.doc.id;
+      //       return data;
+      //     });
+      //   })).subscribe(days => {
+      //     let array = [];
+      //     days.map(day => {
+      //       day.exercises.map(exercise => {
+      //         array.push(exercise);
+      //       });
+      //     });
+
+      //     let names = array.map(element => { return { 
+      //       name: element.name, 
+      //       volume: element.volume 
+      //     } });
+      //     names.forEach(element => { nameArray.push(element) });
+      //     console.log(nameArray);
+          // console.log(nameArray);
+          // let ok = nameArray.filter(element => element.volume >= 1500).map(element => {
+          //   return {
+          //     name: element.name,
+          //     volume: element.volume
+          //   }
+          // });
+
+          // console.log(ok);
+         
+          // const uniqueSet = new Set(nameArray);
+
+          // const backToArray = [...uniqueSet];
+
+         
+
+          // console.log(Array.from(new Set(nameArray)));
+
+          // [...new Set(nameArray)];
+
+          // let array2 = names.filter(element => element.name === 'Incline Press').map(element => {
+          //  return element.volume;
+          // });
+
+          // array3.push(array2[0]);
+
+          // console.log(array3);
+
+          // this.best = Math.max.apply(0, array3);
+
+        // });
+      // });
+
+      
+      
+    });
+
     this.breakpoint = (window.innerWidth > 400) ? 25 : 100;
     this.route.params.subscribe((params: Params) => {
      
@@ -40,7 +114,6 @@ export class DayEditComponent implements OnInit {
         exercises: new FormArray([])
       });
     
-      // if(this.isEdit) {
       this.weekService.getDays(this.weekId).subscribe(item => {
         item = item.sort((a, b) => a.index - b.index);
 
@@ -62,7 +135,8 @@ export class DayEditComponent implements OnInit {
             control.push(
               new FormGroup({
                 name: new FormControl(exercise.name),
-                sets: new FormArray([])
+                sets: new FormArray([]),
+                volume: new FormControl(exercise.volume),
               })
             );
 
@@ -80,9 +154,7 @@ export class DayEditComponent implements OnInit {
         }
 
       });
-      // }
       // this.theForm.valueChanges.subscribe(console.log);
-
     });
 
     
@@ -93,10 +165,11 @@ export class DayEditComponent implements OnInit {
           array.push(set);
         });
       });
-      this.volume = array.map(set => set.weight * set.rep * set.set).reduce((currentTotal, item) => {
+      this.volume = array.map(set => set.weight * set.rep * set.set);
+      this.dailyVolume = this.volume.reduce((currentTotal, item) => {
         return item + currentTotal
       }, 0);
-      this.volumeArray[this.index] = this.volume;
+      this.volumeArray[this.index] = this.dailyVolume;
       this.weeklyVolume = this.volumeArray.reduce((currentTotal, item) => {
         return item + currentTotal
       }, 0);
@@ -111,7 +184,8 @@ export class DayEditComponent implements OnInit {
       name: new FormControl(''),
       sets: new FormArray([
         this.initSets()
-      ])
+      ]),
+      volume: new FormControl(''),
     });
   }
   initSets() {
@@ -151,16 +225,33 @@ export class DayEditComponent implements OnInit {
     this.theForm.reset();
     this.router.navigate(['../']);
   }
-   submitItem() {
-    if (this.theForm.value != '') {
-    //   if (this.isEdit) {
-      this.theForm.value.volume = this.volume;
-      this.weekService.updateDay(this.weekId, this.theForm.value, this.weeklyVolume);
-      // } else {
-        // this.weekService.addWeek(this.week, this.theForm.value);
-      // }
-      this.cancelItem();
-    }
+  submitItem() {
+    //  let result = result2.filter(o1 => result2.some(o2 => o1.volume > o2.volume));
+    
+    // if (this.theForm.value != '') {
+    // this.theForm.value.exercises;
+    this.exercises.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    this.theForm.value.exercises.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    // console.log(this.exercises);
+    // console.log(this.theForm.value.exercises);
+
+    let k = 0;
+    this.exercises.forEach(element => {
+      if (this.theForm.value.exercises.some(item => item.name === element.name)) {
+        element.bestVolume = this.theForm.value.exercises[k].volume;
+        k++;
+      }
+    });
+    console.log(this.exercises);
+    this.weekService.updateExercises(this.exercises);
+
+    let i = 0;
+    this.theForm.value.exercises.forEach(element => {
+      element.volume = this.volume[i++];
+    });
+    this.theForm.value.volume = this.dailyVolume;
+    this.weekService.updateDay(this.weekId, this.theForm.value, this.weeklyVolume);
+    this.cancelItem();
   }
   deleteItem() {
     this.weekService.deleteWeek(this.theForm.value);

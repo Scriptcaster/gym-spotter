@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 import { Week } from '../models/week.model';
 import { Day } from '../models/day.model';
+import { Exercise } from '../models/exercise.model';
 
 @Injectable()
 export class WeekService {
@@ -15,6 +16,7 @@ export class WeekService {
     days: Observable<Day[]>;
     weekDoc: AngularFirestoreDocument<Week>;
     userId: any;
+    bestVolume: Observable<any>;
     constructor( 
         public afs: AngularFirestore,
         private afAuth: AngularFireAuth
@@ -49,6 +51,23 @@ export class WeekService {
             })
         );
 
+        this.bestVolume = this.afAuth.authState.pipe(
+            switchMap(user => {
+                if (user) {
+                    this.weeksCollection = this.afs.collection('data').doc(user.uid).collection('exercises');
+                    return this.weeksCollection.snapshotChanges().pipe(map(changes => {
+                        return changes.map(arr => {
+                            const data = arr.payload.doc.data() as Week;
+                            data.id = arr.payload.doc.id;
+                            return data;
+                        });
+                    }));
+                } else {
+                    return of(null);
+                }
+            })
+        );
+
         // this.days = this.afAuth.authState.pipe(
         //     switchMap(user => {
         //         if (user) {
@@ -65,6 +84,9 @@ export class WeekService {
         //         }
         //     })
         // );
+    }
+    getBest() {
+       return this.bestVolume;
     }
     getDays(weekId) {
         return this.afAuth.authState.pipe(
@@ -88,6 +110,11 @@ export class WeekService {
         const document = this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('weeks').doc(weekId);
         document.collection('days').doc(`${day.id}`).update(day);
         document.update({volume: weeklyVolume});
+    }
+    updateExercises(volume) {
+        volume.forEach(element => {
+            this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('exercises').doc(element.id).update(element);
+        });
     }
     getWeeks() {
         return this.weeks;

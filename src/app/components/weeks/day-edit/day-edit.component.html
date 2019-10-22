@@ -1,6 +1,6 @@
 <!-- <pre> {{theForm.value | json}} </pre> -->
 <div class="form-container">
-    Total Volume: {{volume}}
+    Total Volume: {{dailyVolume}}
     <br><br>
     <form [formGroup]="theForm" novalidate (ngSubmit)="submitItem()">
 
@@ -27,9 +27,16 @@
         <div formArrayName="exercises">
             <div class="row" fxLayout="row" fxLayout.xs="column" fxLayoutWrap="20px" fxLayoutGap="0" fxLayoutAlign="left">
             <div class="item" *ngFor="let exercise of getExercises(theForm); let i = index" [formGroupName]="i" (window:resize)="onResize($event)"> 
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <input type="text" matInput placeholder="Exercise" formControlName="name">
-                </mat-form-field> 
+                </mat-form-field>  -->
+                <mat-form-field>
+                    <mat-label>Select Exercise</mat-label>
+                    <mat-select formControlName="name" #mySelect>
+                        <mat-option *ngFor="let exercise of exercises; let k = index" value="{{exercise.name}}">{{exercise.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <div formArrayName="sets">  
                     <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >
                         <mat-form-field>
@@ -49,6 +56,14 @@
                         <a class="btn btn-primary" (click)="addSet(i)" mat-button color="primary">Add</a>
                     </div>   -->
                 </div>
+                <div *ngIf="mySelect.selected">
+                    <div *ngFor="let exercise of exercises; let x = index">
+                        <div *ngIf="exercise.name == mySelect.selected.value">
+                            Best: {{exercise.bestVolume}}
+                        </div>
+                    </div>
+                </div>
+                <div>Current: {{volume[i]}}</div>
                 <a type="button" (click)="removeExercise(i)" mat-button color="warn">Remove Exercise</a>
             </div>
             </div>

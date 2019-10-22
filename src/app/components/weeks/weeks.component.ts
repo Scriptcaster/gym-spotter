@@ -18,10 +18,11 @@ export class WeeksComponent implements OnInit {
   firstCollection: AngularFirestoreCollection<Day>;
   days: any = [];
   weeks: Week[];
-  volumes: any = [];
-  dailyVolume: any = [];
+  // volumes: any = [];
+  // dailyVolume: any = [];
   weeklyVolumeArray: any = [];
   bestVolume: any = [];
+  // best: number;
 
   constructor(
     public afs: AngularFirestore,
@@ -36,6 +37,8 @@ export class WeeksComponent implements OnInit {
       });
       this.bestVolume = Math.max.apply(0, this.weeklyVolumeArray);
 
+      // let array3 = [];
+
       this.weeks.forEach(element => {
         this.afs.collection('data').doc('Xi2BQ9KuCwOR2MeHIHUPH5G7bTc2').collection('weeks').doc(element.id).collection('days', ref => {
           return ref
@@ -48,16 +51,30 @@ export class WeeksComponent implements OnInit {
           });
         })).subscribe(days => {
           this.days.push(days);
+          
+          // let array = [];
           // days.map(day => {
-          //   this.volumes.push(day.volume)
+          //   day.exercises.map(exercise => {
+          //     array.push(exercise);
+          //   });
           // });
+          // let array2 = array.filter(element => element.name === 'Bench Press').map(element => {
+          //  return element.volume;
+          // });
+          // array3.push(array2[0]);
+          // this.best = Math.max.apply(0, array3);
+         
+         
           // this.dailyVolume = this.volumes.reduce((currentTotal, item) => {
           //   return item + currentTotal
           // }, 0);
           // this.weeklyVolume.push(this.dailyVolume)
         });
       });
+     
     });
+
+    
   }
   addWeek() {
     this.weekService.addWeek(this.days[0]);
