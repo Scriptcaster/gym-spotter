@@ -1,14 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { WeekService } from '../../../services/week.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { DialogNewExercise } from '../../../dialogs/dialog-new-exercise';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-day-edit',
   templateUrl: './day-edit.component.html',
   styleUrls: ['./day-edit.component.scss']
 })
+
 export class DayEditComponent implements OnInit {
   weekId: any;
   index: number;
@@ -22,11 +25,16 @@ export class DayEditComponent implements OnInit {
   weeklyVolume: number;
   bestVolume: number;
   exercises: any;
+
+  animal: string;
+  name: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private weekService: WeekService,
-    public afs: AngularFirestore, 
+    public afs: AngularFirestore,
+    public dialog: MatDialog 
   ) {}
 
   ngOnInit() {
@@ -261,4 +269,19 @@ export class DayEditComponent implements OnInit {
     this.breakpoint = (event.target.innerWidth <= 400) ? 100 : 100;
     this.breakpoint = (event.target.innerWidth > 400) ? 25 : 100;
   }
+
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogNewExercise, {
+      width: '250px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+      this.weekService.addExercise(this.animal);
+    });
+  }
+
 }

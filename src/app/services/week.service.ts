@@ -116,6 +116,10 @@ export class WeekService {
             this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('exercises').doc(element.id).update(element);
         });
     }
+    addExercise(exercise) {
+        console.log(exercise);
+        this.afs.collection('data').doc(this.afAuth.auth.currentUser.uid).collection('exercises').add({name: exercise, bestVolume: 0});
+    }
     getWeeks() {
         return this.weeks;
     }

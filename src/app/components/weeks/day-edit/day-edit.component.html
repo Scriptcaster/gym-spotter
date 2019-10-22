@@ -1,4 +1,5 @@
 <!-- <pre> {{theForm.value | json}} </pre> -->
+
 <div class="form-container">
     Total Volume: {{dailyVolume}}
     <br><br>
@@ -36,6 +37,21 @@
                         <mat-option *ngFor="let exercise of exercises; let k = index" value="{{exercise.name}}">{{exercise.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <a mat-button (click)="openDialog()">New</a>
+
+                <!-- <ol>
+                    <li>
+                        <mat-form-field>
+                            <input matInput [(ngModel)]="name" placeholder="What's your name?">
+                        </mat-form-field>
+                    </li>
+                    <li>
+                        <button mat-raised-button (click)="openDialog()">Pick one</button>
+                    </li>
+                    <li *ngIf="animal">
+                        You chose: <i>{{animal}}</i>
+                    </li>
+                </ol> -->
 
                 <div formArrayName="sets">  
                     <div *ngFor="let set of getSets(exercise); let j = index" [formGroupName]="j" >

@@ -35,14 +35,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReversePipe } from './pipes/reverse.pipe';
+import { DialogNewExercise } from './dialogs/dialog-new-exercise';
 
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, DayEditComponent, DayComponent, WeeksComponent, ReversePipe],
+  declarations: [
+    AppComponent, 
+    HeaderComponent, 
+    DayEditComponent, 
+    DayComponent, 
+    WeeksComponent, 
+    ReversePipe,
+    DialogNewExercise
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -70,8 +80,13 @@ import { ReversePipe } from './pipes/reverse.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatDialogModule,
 
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    DialogNewExercise
   ],
   providers: [WeekService],
   bootstrap: [AppComponent]
